@@ -5,6 +5,16 @@ build/
 dist/
 wheels/
 *.egg-info
+.ipynb_checkpoints/
+
+# LangGraph Checkpoints
+checkpoints.*
+
+# Chromadb store
+chroma_db/
+chroma_db_test/
 
 # Virtual environments
 .venv
+.env
+
