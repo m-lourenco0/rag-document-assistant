@@ -1,0 +1,29 @@
+<div class="flex justify-start">
+    <div class="bg-gray-200 text-gray-800 rounded-lg py-2 px-4 max-w-lg">
+        <article class="prose prose-sm max-w-none">
+            {{ llm_response | safe }}
+        </article>
+        
+        {% if references %}
+        <div class="references-container mt-4 border-t border-gray-300 pt-2">
+            <details>
+                <summary class="text-xs font-semibold text-gray-600 cursor-pointer hover:text-gray-900">
+                    View Sources ({{ references|length }})
+                </summary>
+                <div class="references-content mt-2 space-y-2">
+                    {% for ref in references %}
+                    <div class="reference-item p-2 bg-gray-100 rounded-md border border-gray-200">
+                        <p class="source-info text-xs font-mono text-gray-500 mb-1">
+                            <strong>Source:</strong> {{ ref.source }} | <strong>Page:</strong> {{ ref.page or 'N/A' }}
+                        </p>
+                        <blockquote class="source-content text-xs text-gray-700 border-l-2 border-blue-500 pl-2">
+                            {{ ref.content | safe }}
+                        </blockquote>
+                    </div>
+                    {% endfor %}
+                </div>
+            </details>
+        </div>
+        {% endif %}
+    </div>
+</div>

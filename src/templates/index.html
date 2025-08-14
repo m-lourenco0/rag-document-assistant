@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+
+{% block title %}RAG Technical Chat{% endblock %}
+
+{% block content %}
+<div x-data="chatComponent()" x-init="init()"
+    class="container mx-auto max-w-3xl flex flex-col h-screen bg-white shadow-lg rounded-lg">
+
+    <header class="p-4 border-b border-gray-200 flex justify-between items-center">
+        <div>
+            <h1 class="text-2xl font-bold font-oswald text-gray-800">RAG Technical Chat</h1>
+            <p class="text-sm text-gray-500 font-poppins">Conversation ID: {{ thread_id }}</p>
+        </div>
+        <a href="/"
+            class="inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-3" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            New Chat
+        </a>
+    </header>
+
+    <div id="chat-messages" x-ref="chatMessages" class="flex-grow p-6 space-y-4 overflow-y-auto">
+        <div class="flex justify-start">
+            <div class="bg-gray-200 text-gray-800 rounded-lg py-2 px-4 max-w-lg">
+                <article class="prose prose-sm max-w-none">
+                    <p>Hello! Please upload one or more technical manuals below to begin. Once your documents are processed, you can ask me questions about their content.</p>
+                </article>
+            </div>
+        </div>
+    </div>
+
+    <div id="sending-indicator" class="htmx-indicator mx-auto pt-2">
+        <p class="text-sm text-gray-500 animate-pulse">Agent is thinking...</p>
+    </div>
+
+    <div class="p-4 bg-gray-50 border-t border-gray-200">
+        <form hx-post="/send_message" hx-target="#chat-messages" hx-swap="beforeend"
+            hx-indicator="#sending-indicator" x-on:htmx:before-request="handleUserMessage($event)"
+            class="font-poppins mb-4">
+            <input type="hidden" name="thread_id" value="{{ thread_id }}">
+            <div class="relative flex items-center">
+                <textarea x-ref="textarea" name="message" x-model="message"
+                    @keydown.enter.prevent="$el.closest('form').requestSubmit()"
+                    class="w-full p-3 pr-20 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none transition overflow-hidden"
+                    placeholder="Ask a question about the uploaded documents..." rows="1"
+                    x-init="$el.style.height = $el.scrollHeight + 'px'"
+                    @input="$el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px'"></textarea>
+                <button type="submit" :disabled="!isReadyToChat"
+                    class="absolute right-2 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                    Send
+                </button>
+            </div>
+        </form>
+
+        <form @submit.prevent="uploadFiles" class="font-poppins">
+            <div class="flex items-center justify-between">
+                <input type="file" @change="files = $event.target.files" multiple
+                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+                <button type="submit" :disabled="files.length === 0 || isUploading"
+                    class="ml-4 bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-wait">
+                    Upload
+                </button>
+            </div>
+            <div x-show="isUploading" class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
+                <div class="bg-indigo-600 h-2.5 rounded-full" :style="`width: ${progress}%`"></div>
+            </div>
+            <p x-show="uploadStatus" x-text="uploadStatus"
+                :class="{ 'text-green-600': uploadSuccess, 'text-red-600': !uploadSuccess }" class="text-sm mt-1"></p>
+        </form>
+    </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function chatComponent() {
+        return {
+            message: '',
+            files: [],
+            isUploading: false,
+            isReadyToChat: false, // User can't chat until a file is successfully uploaded
+            progress: 0,
+            uploadStatus: '',
+            uploadSuccess: false,
+
+            init() {
+                const chatMessages = this.$refs.chatMessages;
+                const observer = new MutationObserver(() => {
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                });
+                observer.observe(chatMessages, { childList: true, subtree: true });
+            },
+
+            handleUserMessage(event) {
+                const messageText = this.message.trim();
+                if (!messageText) {
+                    event.preventDefault();
+                    return;
+                }
+                const userMessageHtml = `
+                    <div class="flex justify-end">
+                        <div class="bg-blue-600 text-white rounded-lg py-2 px-4 max-w-lg break-words">
+                            ${messageText.replace(/</g, "&lt;").replace(/>/g, "&gt;")}
+                        </div>
+                    </div>`;
+                this.$refs.chatMessages.insertAdjacentHTML('beforeend', userMessageHtml);
+                this.message = '';
+                this.$nextTick(() => {
+                    const textarea = this.$refs.textarea;
+                    textarea.style.height = 'auto';
+                });
+            },
+
+            uploadFiles() {
+                this.isUploading = true;
+                this.progress = 0;
+                this.uploadStatus = '';
+                this.uploadSuccess = false;
+
+                const formData = new FormData();
+                for (let i = 0; i < this.files.length; i++) {
+                    formData.append('files', this.files[i]);
+                }
+
+                const xhr = new XMLHttpRequest();
+                xhr.open('POST', '/documents', true);
+
+                xhr.upload.onprogress = (event) => {
+                    if (event.lengthComputable) {
+                        this.progress = Math.round((event.loaded / event.total) * 100);
+                    }
+                };
+
+                xhr.onload = () => {
+                    this.isUploading = false;
+                    const response = JSON.parse(xhr.responseText);
+                    if (xhr.status === 200) {
+                        this.uploadSuccess = true;
+                        this.isReadyToChat = true; // Enable the chat input
+                        this.uploadStatus = `✅ Success! Indexed ${response.documents_indexed} document(s) into ${response.total_chunks} chunks. You can now ask questions.`;
+                    } else {
+                        this.uploadSuccess = false;
+                        this.uploadStatus = `❌ Error: ${response.message || 'File upload failed.'}`;
+                    }
+                };
+
+                xhr.onerror = () => {
+                    this.isUploading = false;
+                    this.uploadSuccess = false;
+                    this.uploadStatus = '❌ An error occurred during the upload. Please try again.';
+                };
+
+                xhr.send(formData);
+            }
+        }
+    }
+</script>
+{% endblock %}
