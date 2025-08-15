@@ -1,12 +1,13 @@
 import uuid
+import shutil
 import markdown2
 import sqlite3
 import os
 import tempfile
 from contextlib import asynccontextmanager
-from typing import List, Optional
+from typing import List
 
-from fastapi import FastAPI, Request, Form, UploadFile, File, Header
+from fastapi import FastAPI, Request, Form, UploadFile, File
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -71,6 +72,7 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
+
 app.mount("/static", StaticFiles(directory=settings.STATIC_DIR), name="static")
 templates = Jinja2Templates(directory=settings.TEMPLATES_DIR)
 
@@ -91,88 +93,78 @@ async def get_chat_page(request: Request, thread_id: str):
 @app.post("/documents", response_class=JSONResponse)
 async def upload_documents(request: Request, files: List[UploadFile] = File(...)):
     file_paths = []
+    # Use a temporary directory that cleans itself up
+    with tempfile.TemporaryDirectory() as temp_dir:
+        for file in files:
+            file_path = os.path.join(temp_dir, file.filename)
+
+            with open(file_path, "wb") as buffer:
+                shutil.copyfileobj(file.file, buffer)
+            file_paths.append(file_path)
+
+        indexer = request.app.state.indexer
+
+        try:
+            result = await indexer.process_files(file_paths)
+            return JSONResponse(
+                content={"message": "Documents processed successfully", **result}
+            )
+        except Exception as e:
+            return JSONResponse(
+                status_code=500,
+                content={"message": f"An error occurred during indexing: {e}"},
+            )
+
+
+@app.post("/send_message", response_class=HTMLResponse)
+async def handle_htmx_message(
+    request: Request,
+    message: str = Form(...),
+    thread_id: str = Form(...),
+):
+    """Handles form submissions from the HTMX front-end."""
     try:
-        with tempfile.TemporaryDirectory() as temp_dir:
-            for file in files:
-                file_path = os.path.join(temp_dir, file.filename)
-                with open(file_path, "wb") as f:
-                    f.write(await file.read())
-                file_paths.append(file_path)
+        agent_graph = request.app.state.agent_graph
+        response_data = run_chat(message, thread_id, agent_graph)
 
-            indexer = request.app.state.indexer
-            result = indexer.process_files(file_paths)
-
-        return JSONResponse(
-            content={"message": "Documents processed successfully", **result}
+        html_from_markdown = markdown2.markdown(
+            response_data["answer"], extras=["tables", "cuddled-lists", "breaks"]
+        )
+        context = {
+            "request": request,
+            "llm_response": html_from_markdown,
+            "references": response_data["references"],
+        }
+        return templates.TemplateResponse(
+            name="fragments/llm_response.html", context=context
         )
     except Exception as e:
-        return JSONResponse(
-            status_code=500, content={"message": f"An error occurred: {e}"}
+        print(f"Caught exception in HTMX endpoint: {e}")
+        error_message = "An unexpected error occurred. Please try again."
+        return templates.TemplateResponse(
+            name="fragments/llm_response.html",
+            context={
+                "request": request,
+                "llm_response": error_message,
+                "references": [],
+            },
         )
 
 
-@app.post("/send_message")
-async def handle_question(
-    request: Request,
-    message: Optional[str] = Form(None),
-    thread_id: Optional[str] = Form(None),
-    hx_request: Optional[str] = Header(None),
-):
+@app.post("/api/send_message", response_class=JSONResponse)
+async def handle_api_question(payload: QuestionRequest, request: Request):
+    """Handles JSON requests for the API."""
     try:
-        if hx_request:
-            user_message, conv_id = message, thread_id
-        else:
-            body = await request.json()
-            question_request = QuestionRequest(**body)
-            user_message, conv_id = (
-                question_request.question,
-                question_request.thread_id,
-            )
-
-        if not user_message or not conv_id:
-            return JSONResponse(
-                status_code=400, content={"error": "Missing question or thread_id"}
-            )
-
-        # 1. Get the structured response
         agent_graph = request.app.state.agent_graph
-        response_data = run_chat(user_message, conv_id, agent_graph)
+        response_data = run_chat(payload.question, payload.thread_id, agent_graph)
 
-        # 2. Format the data based on the request type
-        if hx_request:
-            # Format for HTML template
-            html_from_markdown = markdown2.markdown(
-                response_data["answer"], extras=["tables", "cuddled-lists", "breaks"]
-            )
-            context = {
-                "request": request,
-                "llm_response": html_from_markdown,
+        return JSONResponse(
+            content={
+                "answer": response_data["answer"],
                 "references": response_data["references"],
             }
-            return templates.TemplateResponse(
-                name="fragments/llm_response.html", context=context
-            )
-        else:
-            # Format for JSON API response
-            api_references = [ref["content"] for ref in response_data["references"]]
-            return JSONResponse(
-                content={
-                    "answer": response_data["answer"],
-                    "references": api_references,
-                }
-            )
-
+        )
     except Exception as e:
-        print(f"Caught generic exception: {e}")
+        print(f"Caught exception in API endpoint: {e}")
         error_message = "An unexpected error occurred. Please try again."
-        if hx_request:
-            return templates.TemplateResponse(
-                name="fragments/llm_response.html",
-                context={
-                    "request": request,
-                    "llm_response": error_message,
-                    "references": [],
-                },
-            )
-        else:
-            return JSONResponse(status_code=500, content={"error": error_message})
+        return JSONResponse(status_code=500, content={"error": error_message})
