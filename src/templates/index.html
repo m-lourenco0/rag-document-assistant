@@ -24,8 +24,8 @@
     <div id="chat-messages" x-ref="chatMessages" class="flex-grow p-6 space-y-4 overflow-y-auto">
         <div class="flex justify-start">
             <div class="bg-gray-200 text-gray-800 rounded-lg py-2 px-4 max-w-lg">
-                <article class="prose prose-sm max-w-none">
-                    <p>Hello! Please upload one or more technical manuals below to begin. Once your documents are processed, you can ask me questions about their content.</p>
+                <article class="prose max-w-none">
+                    <p>Hello! Click the paperclip icon to upload your technical manuals. The upload will start immediately. Once processed, you can ask questions.</p>
                 </article>
             </div>
         </div>
@@ -36,53 +36,56 @@
     </div>
 
     <div class="p-4 bg-gray-50 border-t border-gray-200">
+        
         <form hx-post="/send_message" hx-target="#chat-messages" hx-swap="beforeend"
             hx-indicator="#sending-indicator" x-on:htmx:before-request="handleUserMessage($event)"
-            class="font-poppins mb-4">
+            class="font-poppins">
             <input type="hidden" name="thread_id" value="{{ thread_id }}">
+            <input type="file" x-ref="fileInput" @change="uploadFiles" multiple class="hidden" />
+
             <div class="relative flex items-center">
+                <button type="button" @click="$refs.fileInput.click()" :disabled="isUploading"
+                        class="p-2 text-gray-500 rounded-full hover:bg-gray-200 focus:outline-none disabled:opacity-50 disabled:cursor-wait">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13" />
+                    </svg>
+                </button>
+
                 <textarea x-ref="textarea" name="message" x-model="message"
-                    @keydown.enter.prevent="$el.closest('form').requestSubmit()"
-                    class="w-full p-3 pr-20 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none transition overflow-hidden"
+                    @keydown.enter.prevent="!$event.shiftKey && $el.closest('form').requestSubmit()"
+                    class="w-full p-3 pl-2 pr-20 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none resize-none transition overflow-hidden"
                     placeholder="Ask a question about the uploaded documents..." rows="1"
                     x-init="$el.style.height = $el.scrollHeight + 'px'"
-                    @input="$el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px'"></textarea>
-                <button type="submit" :disabled="!isReadyToChat"
+                    @input="$el.style.height = 'auto'; $el.style.height = $el.scrollHeight + 'px'"
+                    :disabled="!isReadyToChat"></textarea>
+
+                <button type="submit" :disabled="!isReadyToChat || message.trim() === ''"
                     class="absolute right-2 bg-blue-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                     Send
                 </button>
             </div>
         </form>
 
-        <form @submit.prevent="uploadFiles" class="font-poppins">
-            <div class="flex items-center justify-between">
-                <input type="file" @change="files = $event.target.files" multiple
-                    class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
-                <button type="submit" :disabled="files.length === 0 || isUploading"
-                    class="ml-4 bg-indigo-600 text-white font-semibold py-2 px-4 rounded-lg hover:bg-indigo-700 transition-colors disabled:opacity-50 disabled:cursor-wait">
-                    Upload
-                </button>
-            </div>
-            <div x-show="isUploading" class="w-full bg-gray-200 rounded-full h-2.5 mt-2">
-                <div class="bg-indigo-600 h-2.5 rounded-full" :style="`width: ${progress}%`"></div>
-            </div>
-            <p x-show="uploadStatus" x-text="uploadStatus"
-                :class="{ 'text-green-600': uploadSuccess, 'text-red-600': !uploadSuccess }" class="text-sm mt-1"></p>
-        </form>
+        <div x-show="isUploading || uploadStatus" class="mt-3 text-center h-5">
+             <div x-show="isUploading" class="flex justify-center items-center">
+                <p class="text-sm text-gray-500 animate-pulse">Processing documents...</p>
+             </div>
+             
+            <p x-show="uploadStatus && !isUploading" x-text="uploadStatus"
+               :class="{ 'text-green-600': uploadSuccess, 'text-red-600': !uploadSuccess }" class="text-sm"></p>
+        </div>
     </div>
-
 </div>
 {% endblock %}
+
 
 {% block scripts %}
 <script>
     function chatComponent() {
         return {
             message: '',
-            files: [],
             isUploading: false,
-            isReadyToChat: false, // User can't chat until a file is successfully uploaded
-            progress: 0,
+            isReadyToChat: false,
             uploadStatus: '',
             uploadSuccess: false,
 
@@ -114,33 +117,29 @@
                 });
             },
 
-            uploadFiles() {
+            uploadFiles(event) {
+                const files = event.target.files;
+                if (files.length === 0) return;
+
                 this.isUploading = true;
-                this.progress = 0;
                 this.uploadStatus = '';
                 this.uploadSuccess = false;
 
                 const formData = new FormData();
-                for (let i = 0; i < this.files.length; i++) {
-                    formData.append('files', this.files[i]);
+                for (let i = 0; i < files.length; i++) {
+                    formData.append('files', files[i]);
                 }
 
                 const xhr = new XMLHttpRequest();
                 xhr.open('POST', '/documents', true);
-
-                xhr.upload.onprogress = (event) => {
-                    if (event.lengthComputable) {
-                        this.progress = Math.round((event.loaded / event.total) * 100);
-                    }
-                };
 
                 xhr.onload = () => {
                     this.isUploading = false;
                     const response = JSON.parse(xhr.responseText);
                     if (xhr.status === 200) {
                         this.uploadSuccess = true;
-                        this.isReadyToChat = true; // Enable the chat input
-                        this.uploadStatus = `✅ Success! Indexed ${response.documents_indexed} document(s) into ${response.total_chunks} chunks. You can now ask questions.`;
+                        this.isReadyToChat = true;
+                        this.uploadStatus = `✅ Success! Indexed ${response.documents_indexed} document(s). You can now ask questions.`;
                     } else {
                         this.uploadSuccess = false;
                         this.uploadStatus = `❌ Error: ${response.message || 'File upload failed.'}`;
@@ -154,6 +153,7 @@
                 };
 
                 xhr.send(formData);
+                this.$refs.fileInput.value = '';
             }
         }
     }
