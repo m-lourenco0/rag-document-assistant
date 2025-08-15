@@ -15,7 +15,6 @@ class VectorStoreManager:
 
     def __init__(self):
         """Initializes the VectorStoreManager."""
-        # self.chroma_path = settings.BASE_DIR / "chroma_db"
         self.db_connection: VectorStore | None = None
 
         self.collection_name = "rag_document_collection"
@@ -40,9 +39,8 @@ class VectorStoreManager:
             # Initialize the embedding model
             embeddings = OpenAIEmbeddings(model=settings.VECTORSTORE_EMBEDDING_MODEL)
 
-            # Chroma will create the directory and collection if they don't exist.
+            # Chroma will create the collection if it doesn't exist.
             self.db_connection = Chroma(
-                # persist_directory=str(self.chroma_path),
                 embedding_function=embeddings,
                 collection_name=self.collection_name,
             )
