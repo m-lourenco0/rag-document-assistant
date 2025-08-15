@@ -1,6 +1,8 @@
 import os
 import uuid
+import asyncio
 from typing import List, Dict
+from concurrent.futures import ThreadPoolExecutor
 
 from pydantic import BaseModel, Field
 from langchain_core.documents import Document
@@ -15,10 +17,10 @@ from langchain_community.vectorstores.utils import filter_complex_metadata
 
 class DocumentIndexer:
     """
-    Processes and indexes documents by creating structure-aware text groupings
-    and enriching table documents with an AI-generated summary before indexing.
-    This version includes batching to handle very large documents without
-    exceeding API limits.
+    Processes and indexes documents using parallel processing for speed.
+    - PDF parsing is parallelized across multiple files using threads.
+    - Table summarization uses LLM batching.
+    - Vector store indexing is done concurrently using asyncio.
     """
 
     def __init__(
@@ -32,29 +34,33 @@ class DocumentIndexer:
         self.doc_store = doc_store
         self.llm = llm_for_summarization
         self.child_splitter = RecursiveCharacterTextSplitter(chunk_size=200)
-        print("--- Document Indexer Initialized ---")
 
-    def _load_and_partition(self, file_paths: List[str]) -> List[Document]:
-        """Loads PDFs and partitions them into structured elements."""
-        print("---LOADING & PARTITIONING PDFs---")
-        all_elements = []
-        for path in file_paths:
-            try:
-                loader = UnstructuredPDFLoader(path, mode="elements", strategy="hi_res")
-                elements = loader.load()
-                for element in elements:
-                    element.metadata["filename"] = os.path.basename(path)
-                all_elements.extend(elements)
-            except Exception as e:
-                print(f"Error loading or partitioning {path}: {e}")
+    def _load_and_partition_single_file(self, path: str) -> List[Document]:
+        """Loads and partitions a single PDF file."""
+        try:
+            loader = UnstructuredPDFLoader(path, mode="elements", strategy="hi_res")
+            elements = loader.load()
+            for element in elements:
+                element.metadata["filename"] = os.path.basename(path)
+            return elements
+        except Exception as e:
+            print(f"Error loading or partitioning {path}: {e}")
+            return []
+
+    def _load_and_partition_parallel(self, file_paths: List[str]) -> List[Document]:
+        """Loads and partitions multiple PDFs in parallel using a thread pool."""
+        print(f"---LOADING & PARTITIONING {len(file_paths)} PDFs IN PARALLEL---")
+        with ThreadPoolExecutor() as executor:
+            results = executor.map(self._load_and_partition_single_file, file_paths)
+
+        # Flatten the list of lists into a single list of elements
+        all_elements = [element for sublist in results for element in sublist]
         return all_elements
 
     def _summarize_and_prepare_tables(
         self, table_elements: List[Document]
     ) -> List[Document]:
-        """
-        Summarizes tables and returns a single list of enriched parent documents.
-        """
+        """Summarizes tables and returns a single list of enriched parent documents."""
 
         class TableSummary(BaseModel):
             summary: str = Field(
@@ -91,10 +97,11 @@ class DocumentIndexer:
                 enriched_table_docs.append(enriched_doc)
         return enriched_table_docs
 
-    def process_files(self, file_paths: List[str]) -> dict:
+    async def process_files(self, file_paths: List[str]) -> dict:
         """Main method to orchestrate the indexing pipeline for new files."""
-        all_elements = self._load_and_partition(file_paths)
+        all_elements = self._load_and_partition_parallel(file_paths)
         safe_elements = filter_complex_metadata(all_elements)
+        total_chunks = 0
 
         text_elements, table_elements = [], []
         for el in safe_elements:
@@ -104,12 +111,8 @@ class DocumentIndexer:
                 else text_elements
             ).append(el)
 
-        # 1. Structure-aware grouping for text elements
         parent_documents = []
         if text_elements:
-            print(
-                f"Performing structure-aware grouping on {len(text_elements)} text elements..."
-            )
             content_map: Dict[str, List[str]] = {}
             for el in text_elements:
                 parent_id = el.metadata.get("parent_id")
@@ -117,7 +120,6 @@ class DocumentIndexer:
                     if parent_id not in content_map:
                         content_map[parent_id] = []
                     content_map[parent_id].append(el.page_content)
-
             for el in text_elements:
                 element_id = el.metadata.get("element_id")
                 if element_id in content_map:
@@ -129,19 +131,17 @@ class DocumentIndexer:
                 elif el.metadata.get("parent_id") is None:
                     parent_documents.append(el)
 
-        # 2. Enrich table documents and add them to the list
         if table_elements:
             print(f"Enriching {len(table_elements)} tables with AI summaries...")
             enriched_tables = self._summarize_and_prepare_tables(table_elements)
             parent_documents.extend(enriched_tables)
 
-        # ✅ NEW BATCHED AND EXPLICIT INDEXING LOGIC
         if parent_documents:
             parent_ids = [str(uuid.uuid4()) for _ in parent_documents]
             child_documents = []
 
             print(
-                f"Manually creating child chunks for {len(parent_documents)} parent documents..."
+                f"Creating child chunks for {len(parent_documents)} parent documents..."
             )
             for i, parent_doc in enumerate(parent_documents):
                 parent_id = parent_ids[i]
@@ -154,23 +154,30 @@ class DocumentIndexer:
             print(f"Storing {len(parent_documents)} parent documents in docstore...")
             self.doc_store.mset(list(zip(parent_ids, parent_documents)))
 
-            # Store the child documents in the vectorstore IN BATCHES
+            # Store the child documents in the vectorstore concurrenty
             batch_size = 500  # A safe batch size
+            batches = [
+                child_documents[i : i + batch_size]
+                for i in range(0, len(child_documents), batch_size)
+            ]
+
+            total_chunks = len(child_documents)
+
             print(
-                f"Storing {len(child_documents)} child documents in vectorstore in batches of {batch_size}..."
+                f"Storing {total_chunks} child documents in vectorstore "
+                f"using {len(batches)} concurrent async batches..."
             )
-            for i in range(0, len(child_documents), batch_size):
-                batch = child_documents[i : i + batch_size]
-                self.vector_store.add_documents(batch)
-                print(
-                    f"  - Stored batch {i // batch_size + 1}/{(len(child_documents) - 1) // batch_size + 1}"
-                )
 
-            print("Finished explicit and batched indexing of all documents.")
+            # Create a list of async tasks; one for each batch
+            tasks = [self.vector_store.aadd_documents(batch) for batch in batches]
 
-        total_elements = len(text_elements) + len(table_elements)
-        print(f"\n---Indexing Complete for this batch---")
+            # Run all tasks concurrently and wait for them to complete
+            await asyncio.gather(*tasks)
+
+            print("Finished concurrent indexing of all documents.")
+
+        print("\n---Indexing Complete---")
         return {
-            "documents_processed": len(file_paths),
-            "total_elements_found": total_elements,
+            "documents_indexed": len(file_paths),
+            "total_chunks": total_chunks,
         }
