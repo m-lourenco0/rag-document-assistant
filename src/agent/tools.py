@@ -73,11 +73,7 @@ def create_rag_retriever_tool(
                     "filetype": doc.metadata.get("filetype"),
                     "filename": doc.metadata.get("filename"),
                     "page_number": doc.metadata.get("page_number"),
-                    "doc_id": doc.metadata.get("doc_id"),
                     "element_id": doc.metadata.get("element_id"),
-                    "category": doc.metadata.get("category"),
-                    "parent_id": doc.metadata.get("parent_id"),
-                    "source": doc.metadata.get("source"),
                     "relevance_score": doc.metadata.get("relevance_score"),
                 },
             }
