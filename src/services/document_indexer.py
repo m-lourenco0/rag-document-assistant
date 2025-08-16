@@ -2,11 +2,12 @@ import os
 import uuid
 import asyncio
 import logging
+
 from typing import List, Dict, Tuple
 from concurrent.futures import ThreadPoolExecutor
+from pydantic import BaseModel, Field
 
 from langchain_core.language_models import BaseChatModel
-from pydantic import BaseModel, Field
 from langchain_core.documents import Document
 from langchain_core.stores import InMemoryStore
 from langchain_core.vectorstores import VectorStore
