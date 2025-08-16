@@ -44,14 +44,13 @@ async def lifespan(app: FastAPI):
     llm_provider = LLMProvider()
 
     # Initialize the stores that will be shared across the application
-    vector_store_manager = VectorStoreManager()
+    vector_store = VectorStoreManager().get_connection()
     doc_store = InMemoryStore()
-    vector_store_conn = vector_store_manager.get_connection()
 
     # Create the agent graph and add it to the app's state
     app.state.agent_graph = create_agent_graph(
         checkpointer=checkpointer,
-        vector_store=vector_store_conn,
+        vector_store=vector_store,
         doc_store=doc_store,
         llm_provider=llm_provider,
     )
@@ -59,7 +58,7 @@ async def lifespan(app: FastAPI):
     # Create the Document Indexer and add it to the app's state
     indexing_llm = llm_provider.create_llm_with_fallback(settings.RAG_LLM_PROFILE)
     app.state.indexer = DocumentIndexer(
-        vector_store=vector_store_conn,
+        vector_store=vector_store,
         doc_store=doc_store,
         llm_for_summarization=indexing_llm,
     )
@@ -94,8 +93,6 @@ templates = Jinja2Templates(directory=settings.TEMPLATES_DIR)
 
 
 # --- API Routes ---
-
-
 @app.get("/", response_class=RedirectResponse)
 async def root():
     """Redirects the root URL to a new chat session with a unique ID."""
