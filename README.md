@@ -89,15 +89,15 @@ Follow these instructions to set up and run the project locally.
 * **System Dependencies for `unstructured`**: This library requires Poppler and Tesseract for its high-resolution PDF processing.
   * **macOS**:
 
-        ```bash
-        brew install poppler tesseract
-        ```
+      ```bash
+      brew install poppler tesseract
+      ```
 
   * **Ubuntu/Debian**:
 
-        ```bash
-        sudo apt-get install poppler-utils tesseract-ocr
-        ```
+      ```bash
+      sudo apt-get install poppler-utils tesseract-ocr
+      ```
 
   * **Windows**: Installation instructions for [Poppler](https://github.com/oschwartz10612/poppler-windows/releases/) and [Tesseract](https://github.com/tesseract-ocr/tessdoc/blob/main/Installation.md).
 
@@ -118,7 +118,6 @@ Follow these instructions to set up and run the project locally.
     ```
 
 3. **Sync the dependencies:**
-    *(Note: You will need to generate a `requirements.txt` file from your environment using `uv pip freeze > requirements.txt`)*
 
     ```bash
     uv sync
@@ -152,8 +151,9 @@ Once the installation is complete, you can start the server using `uv run`. This
 
 ```bash
 uv run uvicorn src.main:app --host 0.0.0.0 --port 8000 --reload
-The application will be running and accessible at `http://localhost:8000`.
 ```
+
+The application will be running and accessible at `http://localhost:8000`.
 
 -----
 
@@ -165,13 +165,13 @@ The application will be running and accessible at `http://localhost:8000`.
 4. A success message will appear when indexing is complete. The chat input will become enabled.
 5. Ask questions about the documents you uploaded. You can view the source chunks used for each answer by expanding the "View Sources" dropdown.
 
+-----
+
 ### API Endpoints
 
 You can interact with the service programmatically using the following endpoints. For a complete, interactive API specification, the application provides Swagger UI documentation.
 
 **Swagger Docs**: Available at **[http://localhost:8000/docs](http://localhost:8000/docs)**
-
------
 
 #### 1. Upload Documents
 
@@ -199,8 +199,6 @@ curl -X 'POST' \
   "total_chunks": 311
 }
 ```
-
------
 
 #### 2. Ask a Question (JSON API)
 
