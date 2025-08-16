@@ -2,6 +2,7 @@ import logging
 
 from typing import TypedDict, Annotated, List, Dict, Any
 
+from langchain_core.language_models import BaseChatModel
 from langchain_core.messages import (
     BaseMessage,
     AIMessage,
@@ -11,7 +12,9 @@ from langchain_core.messages import (
 )
 from langgraph.graph import StateGraph, END
 from langgraph.graph.message import add_messages
+from langgraph.graph.state import CompiledStateGraph
 from langgraph.prebuilt import ToolNode
+from langgraph.types import Checkpointer
 
 from src.agent.prompts import agent_prompt
 
@@ -64,7 +67,7 @@ def cleanup_node(state: AgentState) -> dict:
     return {"messages": messages_to_remove, "references": []}
 
 
-def call_agent_node(state: AgentState, llm) -> dict:
+def call_agent_node(state: AgentState, llm: BaseChatModel) -> dict:
     """Invokes the LLM to get the agent's next action.
 
     This node formats the current message history into a prompt and passes it
@@ -100,7 +103,9 @@ def router(state: AgentState) -> str:
         return END
 
 
-def build_chat_graph(tools: list, llm, checkpointer):
+def build_chat_graph(
+    tools: list, llm: BaseChatModel, checkpointer: Checkpointer
+) -> CompiledStateGraph:
     """Constructs and compiles the conversational agent graph.
 
     This function defines the agent's workflow using a StateGraph. It wires
@@ -130,7 +135,7 @@ def build_chat_graph(tools: list, llm, checkpointer):
     return workflow.compile(checkpointer=checkpointer)
 
 
-def run_chat(new_message: str, thread_id: str, agent_graph) -> dict:
+def run_chat(new_message: str, thread_id: str, agent_graph: CompiledStateGraph) -> dict:
     """Executes a single conversational turn against the agent graph.
 
     This function serves as the primary interface for sending a user message
@@ -156,7 +161,7 @@ def run_chat(new_message: str, thread_id: str, agent_graph) -> dict:
 
     final_state = agent_graph.invoke(inputs, config=config)
 
-    logger.info("\n--- AGENT RUN FINISHED ---")
+    logger.debug("\n--- AGENT RUN FINISHED ---")
 
     answer = final_state["messages"][-1].content
     references = final_state.get("references", [])
