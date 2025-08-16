@@ -139,7 +139,7 @@
                     if (xhr.status === 200) {
                         this.uploadSuccess = true;
                         this.isReadyToChat = true;
-                        this.uploadStatus = `✅ Success! Indexed ${response.documents_indexed} document(s). You can now ask questions.`;
+                      this.uploadStatus = `✅ Success! Indexed ${response.documents_indexed} document(s) with ${response.total_chunks} chunks. You can now ask questions.`;
                     } else {
                         this.uploadSuccess = false;
                         this.uploadStatus = `❌ Error: ${response.message || 'File upload failed.'}`;
