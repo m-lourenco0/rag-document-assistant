@@ -7,11 +7,11 @@ The system features an advanced retrieval pipeline, a stateful conversational ag
 <table>
   <tr>
     <td align="center">
-      <img src="chat_example_1.jpeg" alt="Chat UI showing document upload and first question" width="400">
+      <img src="data/chat_example_1.jpeg" alt="Chat UI showing document upload and first question" width="400">
       <em>Step 1: Uploading documents and asking a question.</em>
     </td>
     <td align="center">
-      <img src="chat_example_2.jpeg" alt="Chat UI showing the LLM response with sources" width="400">
+      <img src="data/chat_example_2.jpeg" alt="Chat UI showing the LLM response with sources" width="400">
       <em>Step 2: Receiving a detailed answer with expandable sources.</em>
     </td>
   </tr>
