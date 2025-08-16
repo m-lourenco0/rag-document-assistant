@@ -2,7 +2,6 @@ import logging
 
 from langchain_core.vectorstores import VectorStore
 from langgraph.checkpoint.sqlite import SqliteSaver
-from langchain_openai import ChatOpenAI
 from langchain.storage import InMemoryStore
 from langgraph.graph.state import CompiledStateGraph
 
