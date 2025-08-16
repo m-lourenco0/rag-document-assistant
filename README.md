@@ -4,7 +4,18 @@ This project is a solution for the **Machine Learning Engineering - LLM Challeng
 
 The system features an advanced retrieval pipeline, a stateful conversational agent, and a clean, interactive web interface. It is designed to be robust, scalable, and highly accurate.
 
-[Live Demo Link or Screenshot of the UI - *Optional, but recommended*]
+<table>
+  <tr>
+    <td align="center">
+      <img src="chat_example_1.jpeg" alt="Chat UI showing document upload and first question" width="400">
+      <em>Step 1: Uploading documents and asking a question.</em>
+    </td>
+    <td align="center">
+      <img src="chat_example_2.jpeg" alt="Chat UI showing the LLM response with sources" width="400">
+      <em>Step 2: Receiving a detailed answer with expandable sources.</em>
+    </td>
+  </tr>
+</table>
 
 -----
 
