@@ -37,7 +37,7 @@
 
     <div class="p-4 bg-gray-50 border-t border-gray-200">
         
-        <form hx-post="/send_message" hx-target="#chat-messages" hx-swap="beforeend"
+        <form hx-post="/question" hx-target="#chat-messages" hx-swap="beforeend"
             hx-indicator="#sending-indicator" x-on:htmx:before-request="handleUserMessage($event)"
             class="font-poppins">
             <input type="hidden" name="thread_id" value="{{ thread_id }}">

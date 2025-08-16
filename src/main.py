@@ -4,6 +4,7 @@ import shutil
 import logging
 import sqlite3
 import tempfile
+
 from typing import List
 from contextlib import asynccontextmanager
 
@@ -11,9 +12,9 @@ from fastapi import FastAPI, Request, Form, UploadFile, File, Depends
 from fastapi.responses import HTMLResponse, RedirectResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+
 from langgraph.graph.state import CompiledStateGraph
 from langchain.storage import InMemoryStore
-from langchain_openai import ChatOpenAI
 from langgraph.checkpoint.sqlite import SqliteSaver
 
 from src.config import settings
@@ -137,7 +138,7 @@ async def upload_documents(
             )
 
 
-@app.post("/send_message", response_class=HTMLResponse)
+@app.post("/question", response_class=HTMLResponse)
 async def handle_htmx_message(
     request: Request,
     message: str = Form(...),
@@ -154,7 +155,7 @@ async def handle_htmx_message(
     )
 
 
-@app.post("/api/send_message", response_class=JSONResponse)
+@app.post("/api/question", response_class=JSONResponse)
 async def handle_api_question(
     payload: QuestionRequest,
     agent_graph: CompiledStateGraph = Depends(get_agent_graph),
