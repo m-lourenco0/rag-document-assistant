@@ -40,6 +40,26 @@ This implementation includes all core requirements and several optional enhancem
 
 The system is split into two main pipelines: an **Indexing Pipeline** for processing documents and a **Query Pipeline** for answering questions.
 
+```mermaid
+graph TD
+    subgraph Indexing Pipeline
+        A[User Uploads PDFs] --> B{Partition with Unstructured};
+        B --> C{Summarize Tables with LLM};
+        C --> D{Chunk into Parent/Child Docs};
+        D --> E[Store Parents in InMemoryStore];
+        D --> F[Embed & Store Children in ChromaDB];
+    end
+
+    subgraph Query Pipeline
+        G[User Asks Question] --> H{Agent Invokes Tool};
+        H --> I[Vector Search in ChromaDB];
+        I --> J[Retrieve Parent Docs];
+        J --> K[Rerank with Cohere];
+        K --> L{LLM Generates Answer};
+        L --> M[Return Answer & Sources];
+    end
+```
+
 1. **Indexing Pipeline (`POST /documents`)**:
 
       * **Upload**: User uploads PDF files via the API.
@@ -59,6 +79,14 @@ The system is split into two main pipelines: an **Indexing Pipeline** for proces
       * **Reranking**: The retrieved parent documents are passed to a **Cohere Rerank** model, which re-sorts them based on semantic relevance to the original query.
       * **Generation**: The top-ranked, reranked documents are passed to the LLM along with the original question. The LLM synthesizes this information to generate a final answer.
       * **Response**: The answer and the source document references are returned to the user.
+
+-----
+
+## 🤔 Trade-offs and Design Choices
+
+* **Local vs. API-based PDF Parsing**: I chose `unstructured.io`'s local, open-source models (`strategy="hi_res"`) to make the project fully runnable without extra API keys for parsing. The trade-off is slower indexing speed compared to their paid cloud API. This decision prioritizes accessibility and cost-free setup for the challenge.
+* **LangGraph vs. Standard LangChain Agent**: While a standard LangChain agent could work, I chose LangGraph to build the conversational agent. This provides explicit, stateful control over the agent's logic, making it easier to debug, extend, and manage complex multi-turn conversations and tool use cycles.
+* **SQLite for Conversation History**: For this challenge, `SQLite` is a simple, file-based solution that requires no extra setup. In the "Deploying to Production" section, I explicitly outline moving this to a more robust database like PostgreSQL to handle concurrency, which is the correct trade-off for a production system.
 
 -----
 
@@ -216,7 +244,7 @@ curl -X 'POST' \
   -H 'Content-Type: application/json' \
   -d '{
   "question": "What are the steps for lubrication?",
-  "thread_id": "some-unique-thread-id"
+  "thread_id": "some-unique-thread-id" // Used to maintain conversation history for the stateful agent.
 }'
 ```
 
@@ -249,6 +277,49 @@ curl -X 'POST' \
   ]
 }
 ```
+
+## 📂 Project Structure
+
+The project follows a modular structure within the `src/` directory to separate concerns and improve maintainability.
+
+```
+
+src/
+├── agent/
+│   ├── agent.py            # Core LangGraph agent definition and logic
+│   ├── factory.py          # Assembles the agent, tools, and LLM
+│   ├── prompts.py          # System prompts for the agent and summarizer
+│   └── tools.py            # Defines the advanced RAG retrieval tool
+├── services/
+│   ├── chat_service.py     # Handles agent interaction and response formatting
+│   ├── document_indexer.py # Manages the entire PDF processing pipeline
+│   ├── llm_provider.py     # Manages LLM instances and fallbacks
+│   └── vector_store.py     # Manages the ChromaDB connection
+├── templates/
+│   ├── static/             # CSS, JS, and image assets
+│   ├── fragments/          # HTML fragments for HTMX
+│   ├── base.html           # Base Jinja2 template
+│   └── index.html          # Main chat page template
+├── config.py               # Pydantic settings management
+├── logging_config.py       # Logging configuration
+├── main.py                 # FastAPI application entrypoint
+└── schemas.py              # Pydantic data models for API requests
+
+```
+
+-----
+
+## ✅ System Evaluation
+
+We have conducted a rigorous, quantitative evaluation of this RAG system to measure its performance on real-world technical documents. The complete methodology, results, and analysis are detailed in a separate report.
+
+**Key Highlights:**
+
+* **Methodology**: A "golden dataset" of 28 question-answer pairs was manually generated from the source documents. An "LLM-as-a-Judge" (`gpt-4o`) was then used to score the RAG system's performance on a per-document basis.
+* **Faithfulness Score: 1.00/1.00**: The system achieved a perfect score, indicating it does not hallucinate or invent information. All answers are strictly grounded in the provided source documents.
+* **Answer Relevance Score: 0.84/1.00**: The system's answers are consistently accurate and on-topic, though there is an opportunity to improve their comprehensiveness.
+
+For a full breakdown of the evaluation process, per-document scores, and illustrative examples, please see the complete report on `EVALUATION.md`
 
 -----
 
@@ -342,31 +413,16 @@ For a production environment where indexing speed is critical, consider the foll
 
 -----
 
-## 📂 Project Structure
+### 🔮 Future Work
 
-The project follows a modular structure within the `src/` directory to separate concerns and improve maintainability.
+This project provides a strong foundation for a production-grade RAG system. Based on the current implementation, here are the most logical and impactful next steps:
 
-```
+* **Hybrid Search**: Implement a hybrid search strategy that combines the existing semantic (vector) search with a traditional keyword-based search. This would significantly improve retrieval for queries that rely on specific codes, model numbers, or acronyms where exact lexical matching is crucial.
 
-src/
-├── agent/
-│   ├── agent.py            # Core LangGraph agent definition and logic
-│   ├── factory.py          # Assembles the agent, tools, and LLM
-│   ├── prompts.py          # System prompts for the agent and summarizer
-│   └── tools.py            # Defines the advanced RAG retrieval tool
-├── services/
-│   ├── chat_service.py     # Handles agent interaction and response formatting
-│   ├── document_indexer.py # Manages the entire PDF processing pipeline
-│   ├── llm_provider.py     # Manages LLM instances and fallbacks
-│   └── vector_store.py     # Manages the ChromaDB connection
-├── templates/
-│   ├── static/             # CSS, JS, and image assets
-│   ├── fragments/          # HTML fragments for HTMX
-│   ├── base.html           # Base Jinja2 template
-│   └── index.html          # Main chat page template
-├── config.py               # Pydantic settings management
-├── logging_config.py       # Logging configuration
-├── main.py                 # FastAPI application entrypoint
-└── schemas.py              # Pydantic data models for API requests
+* **Multi-Modal Indexing for Images**: Extend the intelligent indexing pipeline to handle embedded images. Similar to the current LLM-powered table summarization, this would involve:
+    1. Extracting images from the documents during the partitioning step.
+    2. Passing them to a multi-modal model (like GPT-4o or Google Gemini) to generate rich, descriptive text summaries.
+    3. Indexing these summaries alongside the text chunks.
+    This would make visual content like diagrams, charts, and schematics fully searchable. This was a planned feature that was scoped out due to time constraints but remains a high-priority enhancement.
 
-```
+* **Agent Tool Expansion**: Increase the agent's capabilities by adding more specialized tools. For example, a `calculator` tool could perform numerical computations based on data retrieved from the documents, or a `data_visualizer` tool could generate plots from extracted table data.
