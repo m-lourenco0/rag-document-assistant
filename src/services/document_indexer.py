@@ -3,6 +3,7 @@ import uuid
 import asyncio
 import logging
 
+from asyncio import Semaphore
 from typing import List, Dict, Tuple
 from concurrent.futures import ThreadPoolExecutor
 from pydantic import BaseModel, Field
@@ -221,11 +222,18 @@ class DocumentIndexer:
         ]
 
         total_chunks = len(child_docs)
-        logger.info(
-            f"Storing {total_chunks} child documents in vectorstore "
-            f"using {len(batches)} concurrent async batches..."
-        )
+        logger.info(f"Storing {total_chunks} child documents in vectorstore ")
 
-        tasks = [self.vector_store.aadd_documents(batch) for batch in batches]
-        await asyncio.gather(*tasks)
+        # NOTE: Ideally we would run the add_documents function with
+        # asyncio to improve performance, but my current OpenAI account
+        # does not have enough rate limit to use that, so we are using
+        # sync calls instead
+        # tasks = [self.vector_store.aadd_documents(batch) for batch in batches]
+        # await asyncio.gather(*tasks)
+
+        # Process batches one by one instead of concurrently
+        for i, batch in enumerate(batches):
+            logger.debug(f"Processing batch {i + 1}/{len(batches)}...")
+            await self.vector_store.aadd_documents(batch)
+
         logger.info("Finished storing all documents.")
