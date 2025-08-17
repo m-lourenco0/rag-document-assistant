@@ -300,8 +300,8 @@ src/
 │   ├── fragments/          # HTML fragments for HTMX
 │   ├── base.html           # Base Jinja2 template
 │   └── index.html          # Main chat page template
-├── config.py               # Pydantic settings management
-├── logging_config.py       # Logging configuration
+├── config.py                # Pydantic settings management
+├── logging_config.py        # Logging configuration
 ├── main.py                 # FastAPI application entrypoint
 └── schemas.py              # Pydantic data models for API requests
 
