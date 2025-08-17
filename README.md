@@ -1,4 +1,4 @@
-# 📄 Advanced RAG System for Technical Documents
+# 📄 RAG System for Technical Documents
 
 This project is a solution for the **Machine Learning Engineering - LLM Challenge**. It implements a sophisticated, production-ready Retrieval-Augmented Generation (RAG) system that allows users to upload technical PDF documents and ask complex questions about their content.
 
@@ -33,6 +33,20 @@ This implementation includes all core requirements and several optional enhancem
 * **Multi-Provider LLM with Fallbacks**: Supports multiple LLM providers (OpenAI, Google, Anthropic) and includes automatic fallback logic to ensure high availability.
 * **Interactive Web UI**: A user-friendly frontend built with **FastAPI**, **Jinja2**, **HTMX**, and **Alpine.js** for a smooth, single-page application feel.
 * **Dual API Endpoints**: Provides both a JSON API endpoint for programmatic access and an HTMX-powered endpoint for the web UI.
+
+-----
+
+## ✅ System Evaluation
+
+We have conducted a rigorous, quantitative evaluation of this RAG system to measure its performance on real-world technical documents. The complete methodology, results, and analysis are detailed in a separate report.
+
+**Key Highlights:**
+
+* **Methodology**: A "golden dataset" of 28 question-answer pairs was manually generated from the source documents. An "LLM-as-a-Judge" (`gpt-4o`) was then used to score the RAG system's performance on a per-document basis.
+* **Faithfulness Score: 1.00/1.00**: The system achieved a perfect score, indicating it does not hallucinate or invent information. All answers are strictly grounded in the provided source documents.
+* **Answer Relevance Score: 0.84/1.00**: The system's answers are consistently accurate and on-topic, though there is an opportunity to improve their comprehensiveness.
+
+For a full breakdown of the evaluation process, per-document scores, and illustrative examples, please see the complete report on [`EVALUATION.md`](/EVALUATION.md)
 
 -----
 
@@ -103,20 +117,6 @@ graph TD
 * **Frontend**: **Jinja2**, **HTMX**, **Alpine.js**, **Tailwind CSS**
 * **Configuration**: **Pydantic**
 * **Deployment**: Can be containerized with **Docker**.
-
------
-
-## ✅ System Evaluation
-
-We have conducted a rigorous, quantitative evaluation of this RAG system to measure its performance on real-world technical documents. The complete methodology, results, and analysis are detailed in a separate report.
-
-**Key Highlights:**
-
-* **Methodology**: A "golden dataset" of 28 question-answer pairs was manually generated from the source documents. An "LLM-as-a-Judge" (`gpt-4o`) was then used to score the RAG system's performance on a per-document basis.
-* **Faithfulness Score: 1.00/1.00**: The system achieved a perfect score, indicating it does not hallucinate or invent information. All answers are strictly grounded in the provided source documents.
-* **Answer Relevance Score: 0.84/1.00**: The system's answers are consistently accurate and on-topic, though there is an opportunity to improve their comprehensiveness.
-
-For a full breakdown of the evaluation process, per-document scores, and illustrative examples, please see the complete report on [`EVALUATION.md`](/EVALUATION.md)
 
 -----
 
