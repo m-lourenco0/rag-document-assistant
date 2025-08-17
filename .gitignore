@@ -21,3 +21,6 @@ chroma_db_test/
 # Remove logs
 *.log
 
+# Mac Related``
+.DS_Store
+
