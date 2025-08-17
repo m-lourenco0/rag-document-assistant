@@ -106,6 +106,20 @@ graph TD
 
 -----
 
+## ✅ System Evaluation
+
+We have conducted a rigorous, quantitative evaluation of this RAG system to measure its performance on real-world technical documents. The complete methodology, results, and analysis are detailed in a separate report.
+
+**Key Highlights:**
+
+* **Methodology**: A "golden dataset" of 28 question-answer pairs was manually generated from the source documents. An "LLM-as-a-Judge" (`gpt-4o`) was then used to score the RAG system's performance on a per-document basis.
+* **Faithfulness Score: 1.00/1.00**: The system achieved a perfect score, indicating it does not hallucinate or invent information. All answers are strictly grounded in the provided source documents.
+* **Answer Relevance Score: 0.84/1.00**: The system's answers are consistently accurate and on-topic, though there is an opportunity to improve their comprehensiveness.
+
+For a full breakdown of the evaluation process, per-document scores, and illustrative examples, please see the complete report on [`EVALUATION.md`](/EVALUATION.md)
+
+-----
+
 ## 🚀 Getting Started
 
 Follow these instructions to set up and run the project locally.
@@ -308,20 +322,6 @@ src/
 └── schemas.py              # Pydantic data models for API requests
 
 ```
-
------
-
-## ✅ System Evaluation
-
-We have conducted a rigorous, quantitative evaluation of this RAG system to measure its performance on real-world technical documents. The complete methodology, results, and analysis are detailed in a separate report.
-
-**Key Highlights:**
-
-* **Methodology**: A "golden dataset" of 28 question-answer pairs was manually generated from the source documents. An "LLM-as-a-Judge" (`gpt-4o`) was then used to score the RAG system's performance on a per-document basis.
-* **Faithfulness Score: 1.00/1.00**: The system achieved a perfect score, indicating it does not hallucinate or invent information. All answers are strictly grounded in the provided source documents.
-* **Answer Relevance Score: 0.84/1.00**: The system's answers are consistently accurate and on-topic, though there is an opportunity to improve their comprehensiveness.
-
-For a full breakdown of the evaluation process, per-document scores, and illustrative examples, please see the complete report on [`EVALUATION.md`](/EVALUATION.md).
 
 -----
 
