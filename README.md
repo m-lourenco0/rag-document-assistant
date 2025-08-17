@@ -321,15 +321,13 @@ We have conducted a rigorous, quantitative evaluation of this RAG system to meas
 * **Faithfulness Score: 1.00/1.00**: The system achieved a perfect score, indicating it does not hallucinate or invent information. All answers are strictly grounded in the provided source documents.
 * **Answer Relevance Score: 0.84/1.00**: The system's answers are consistently accurate and on-topic, though there is an opportunity to improve their comprehensiveness.
 
-For a full breakdown of the evaluation process, per-document scores, and illustrative examples, please see the complete report on `EVALUATION.md`
+For a full breakdown of the evaluation process, per-document scores, and illustrative examples, please see the complete report on [`EVALUATION.md`](/EVALUATION.md).
 
 -----
 
 ## 🚀 Deploying to Production
 
 While this project is fully functional for local use and demonstration, running it in a production environment requires several key architectural changes to ensure scalability, reliability, and observability.
-
------
 
 ### 1. Application Server
 
@@ -342,8 +340,6 @@ uv run gunicorn -w 4 -k uvicorn.workers.UvicornWorker src.main:app
 ````
 
 This is typically placed behind a reverse proxy like **Nginx** or a cloud load balancer.
-
------
 
 ### 2. Persistent and Scalable Storage
 
@@ -359,8 +355,6 @@ The default storage solutions (`SQLite`, local `ChromaDB`, and `InMemoryStore`) 
 
 * **Parent Document Store**: **This is a critical change.** The default `InMemoryStore` will lose all parent documents every time the application restarts. This must be replaced with a persistent, fast key-value store like **Redis**. LangChain has a `RedisStore` that can be used as a drop-in replacement.
 
------
-
 ### 3. Decoupled Indexing Pipeline
 
 Currently, the file indexing process runs synchronously within the main API process. A large upload could block the server, making it unresponsive. In production, this task should be decoupled.
@@ -371,8 +365,6 @@ Currently, the file indexing process runs synchronously within the main API proc
     2. It immediately returns a `202 Accepted` response to the user with a job ID.
     3. A dedicated worker process, running independently from the API, pulls the job from the queue and performs the time-consuming indexing.
     4. The user can poll a separate `/jobs/{job_id}` endpoint to check the status of the indexing process.
-
------
 
 ### 4. Containerization and Orchestration
 
@@ -385,8 +377,6 @@ For consistent and reproducible deployments, the entire application stack should
 * An Nginx reverse proxy.
 
 This setup can then be deployed to any container orchestration platform like **Kubernetes** or **AWS ECS**.
-
------
 
 ### 5. Monitoring and Observability
 
