@@ -1,0 +1,91 @@
+[
+  {
+    "question": "What is the complete, step-by-step procedure for correctly attaching the lead cable to the motor's receptacle?",
+    "ground_truth_answer": "To properly attach the lead cable, you must first align the protrusion on the cable with the notch on the receptacle. Insert the cable until it is fully seated and bottoms out. Before threading the connection nut, ensure its set screw is backed out to prevent scratching the cable. Place the nut and turn it counter-clockwise until you feel a click, which indicates the threads are properly meshed and prevents cross-threading. Hand-tighten the nut, then use a wrench to achieve the specific tightening torque listed on the UL certification tag attached to the cable. Finally, tighten the set screw on the nut to prevent it from loosening.",
+    "ground_truth_references": [
+      "To insure the cable is properly mated to the receptacle, the receptacle has a notch and the cable insert has a pro-trusion that will align with the notch.",
+      "Insert the cable into the receptacle. Insure that the protrusion on the cable lines up with the receptacle notch.",
+      "Insert the cable and make sure the cable is fully inserted.",
+      "The cable should bottom out inside the receptacle.",
+      "Make sure the set screw on the nut is backed out so it will not scratch the cable.",
+      "Slide the nut into place and turn the nut counter-clockwise (loosening direction) until you feel and hear (you will hear a click) the threads mesh.",
+      "This will insure that no cross-threading will occur when tightening the nut.",
+      "Tighten the nut by hand and then use a wrench until the proper tightening torque is achieved.",
+      "The proper tightening torque is stated on the tag attached to the cable.",
+      "Once the nut is properly tightened, tighten the set screw to prevent the nut from loosening."
+    ]
+  },
+  {
+    "question": "What are the maximum operating submergence depth and pressure limits for the submersible motors?",
+    "ground_truth_answer": "The maximum submergence for the motor should not go beyond 160 feet (49 meters) in depth. For motors with Tandem Seal designs, the maximum external motor seal pressure is 100 PSI (690 kpas). For motors with slurry seal designs, the maximum external motor seal pressure is significantly lower, at 15 PSI (103 kpas).",
+    "ground_truth_references": [
+      "Maximum submergence of motor is not to exceed 160 ft (49m) in depth and or 100 PSI (690 kpas) at the external motor seal for Tandem Seal designs.",
+      "For slurry seal designs the maximum external motor seal pressure is 15 PSI (103 kpas)."
+    ]
+  },
+  {
+    "question": "Explain the submersible motor's moisture protection system, including its key components and how it detects moisture.",
+    "ground_truth_answer": "The moisture protection system features a non-wicking cable cap assembly and dual moisture sensing probes. The cable cap assembly is designed to stop moisture from wicking through the cable, even if the cable jacket is punctured. The dual moisture sensing probes are positioned in an oil chamber between tandem mechanical seals. If the outer seal fails, water enters this chamber and mixes with the oil. A separate leakage detector control, such as an Ametek APT Series 8040MD, applies voltage to these probes. The presence of water in the oil increases conductivity, which raises the current flow in the probe circuit, triggering an alarm. It is mandatory to connect this leakage detector system for the warranty and U/L listing to be valid.",
+    "ground_truth_references": [
+      "The submersible moisture protection system consists of the non-wicking cable cap assembly and the dual moisture sensing probes.",
+      "The cable cap assembly prevents moisture from wicking through the cable assembly even when the cable jacket has been punctured.",
+      "Dual moisture sensing probes extend into the oil chamber located between the tandem mechanical seals.",
+      "Should the outer seal fail, water will enter the oil chamber through the labyrinth slinger paths and create a water/oil emulsion in the oil chamber.",
+      "The moisture detector control applies voltage to the moisture probes.",
+      "The presence of water in the oil chamber increases the conductivity sufficiently to increase current flow through the probe circuit.",
+      "A leakage detector control such as Ametek APT Series 8040MD Moisture Detector (or equivalent) must be purchased separately.",
+      "The leakage detector control system must be connected for the warranty and the U/L listing to be valid.",
+      "Failure to properly connect and use this leakage detector system voids motor warranty."
+    ]
+  },
+  {
+    "question": "How should a qualified person check and correct the rotation direction for a three-phase submersible motor?",
+    "ground_truth_answer": "To check and correct the rotation of a three-phase motor, first, ensure all power is turned off and locked out, and verify there is zero voltage at the motor starter connectors. The motor shaft must be disconnected from the load. Momentarily apply power to observe the direction of the shaft's rotation. If the rotation is incorrect, turn off and lock out all power again, confirming zero voltage at the motor leads. To reverse the direction, interchange any two of the three motor power leads at the motor starter. Finally, restore power to verify the rotation is now correct before turning off the power again for final load connection.",
+    "ground_truth_references": [
+      "Three Phase Motors ONLY.",
+      "Turn off and lockout all power and verify the voltage at the motor starter connectors are zero.",
+      "Be sure the motor shaft is disconnected from the load and will not cause mechanical rotation of the motor shaft.",
+      "Momentarily apply power and check the direction of rotation of the motor shaft.",
+      "If shaft rotation is incorrect, change the direction of rotation as follows:",
+      "i. Turn off and lockout all power and verify that the voltage at the motor leads is zero.",
+      "ii. Reverse any two of three motor power leads at the motor starter.",
+      "iii. Restore power and verify correct rotation."
+    ]
+  },
+  {
+    "question": "What is the recommended lubricant for these motors, and what are the minimum and maximum oil quantities for the 210TY, 250TY, and 440TY frame sizes?",
+    "ground_truth_answer": "The recommended lubricant is Shell Rotella 10 SAE 10W. The appropriate lubricant quantities for the specified frame sizes are as follows:\n\n* **210TY:** Minimum 2.0 quarts, Maximum 2.5 quarts \n* **250TY:** Minimum 3.0 quarts, Maximum 3.5 quarts \n* **440TY:** Minimum 3.75 quarts, Maximum 8.0 quarts",
+    "ground_truth_references": [
+      "Recommended lubricant is Shell Rotella 10 SAE 10W.",
+      "Frame Size | Oil Spec | Quantity Min. Quarts | Quantity Max. Quarts\n---|---|---|---\n180TY | 4824-18-AF | 1.0 | 1.5\n210TY | 4824-18-AF | 2.0 | 2.5\n250TY | 4824-18-AF | 3.0 | 3.5\n320TY | 4824-18-AF | 3.0 | 3.5\n360TY | 4824-18-AF | 3.75 | 4.0\n440TY | 4824-18-AF | 3.75 | 8.0"
+    ]
+  },
+  {
+    "question": "According to the manual, what precautions must be taken when lifting and handling the submersible motor?",
+    "ground_truth_answer": "When handling the motor, you must never lift, raise, or lower it by its power cords, as this can severely damage the lead connections and water seals. The motor should only be lifted using the provided lifting eyes. When lifting, a spreader bar is the preferred method to evenly distribute the force. If a spreader bar is not used, the angle of the lift rope must not be greater than 45 degrees from vertical to avoid damaging the motor. The motor must be stored with its shaft pointing down in its original packaging until it is ready to be installed.",
+    "ground_truth_references": [
+      "Never raise or lower the motor/pump by the power cords.",
+      "Use lifting eyes provided in the motor casting (opposite drive end) and attache a cord/cable to lift the weight of the motor and pump.",
+      "Failure to lift this motor properly may seriously damage the lead connections and water seals and seriously damage the motor.",
+      "The motor must be stored shaft down in its' original packaging until it is to be into service.",
+      "The motor should only be lifted using the lifting eyes provided, see Figure 2-1.",
+      "1. Only use the lifting eyes provided to lift the motor.",
+      "2. Never attempt to lift the motor by the power cords.",
+      "3. Be sure the motor is stored shaft down until ready to install.",
+      "Lift using Lift Eyes only.",
+      "Lifting by power cords will cause motor damage. Use spreader bar to evenly distribute lift force.",
+      "Angle of lift rope (no spreader bar) should not exceed 45° from vertical, excessive lift angle can damage motor."
+    ]
+  },
+  {
+    "question": "How are the thermal protectors (thermostats) intended to be connected, and what specific type of protection do they provide?",
+    "ground_truth_answer": "The thermostat leads, marked P1 and P2, must be connected in series with the stop button of the magnetic motor controller's 3-wire pilot circuit. They are automatic reset thermostats designed for a normally closed circuit, where they are in series with the magnetic starter's holding coil. These thermostats provide 'Over Temperature' protection as defined by NEMA MG 1-12.53, opening the circuit before the motor reaches dangerous temperatures. However, they do not provide protection against winding over-temperature conditions caused by a locked rotor; separate over-current protection is suggested for that purpose.",
+    "ground_truth_references": [
+      "Thermostat leads marked P1 & P2 must be connected in series with the stop button of the 3-wire pilot circuit of the magnetic motor controller, so that the thermostat will open the circuit before dangerous temperatures are reached.",
+      "Thermostats are automatic reset for use in a normally closed circuit where the thermostat is connected In series with the holding coil of the magnetic starter.",
+      "Thermostats provide \"Over Temperature\" Protection in accordance with NEMA MG 1-12.53.",
+      "Thermostats do not provide winding over temperature protection (locked rotor).",
+      "It is suggested that over current protection be used in the motor starter to ensure locked rotor protection."
+    ]
+  }
+]

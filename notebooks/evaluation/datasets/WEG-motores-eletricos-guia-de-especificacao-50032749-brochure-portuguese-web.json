@@ -1,0 +1,79 @@
+[
+  {
+    "question": "What are the primary components of a three-phase induction motor's stator and rotor as described in the guide?",
+    "ground_truth_answer": "A three-phase induction motor is primarily composed of a stator and a rotor. \n\n**The stator includes:**\n* **Frame (Carcaça):** A sturdy support structure made of cast iron, steel, or injected aluminum, which is corrosion-resistant and typically has fins. \n* **Laminated Core (Núcleo de chapas):** Made from magnetic steel sheets.\n* **Three-Phase Winding (Enrolamento trifásico):** Three identical sets of coils, one for each phase, connected to the three-phase power supply.\n\n**The rotor includes:**\n* **Shaft (Eixo):** Transmits the mechanical power developed by the motor.\n* **Laminated Core (Núcleo de chapas):** The sheets have the same characteristics as the stator sheets.\n* **Bars and Short-Circuit Rings (Barras e anéis de curto-circuito):** Made of aluminum injected under pressure in a single piece.",
+    "ground_truth_references": [
+      "O motor de indução trifásico (Figura 1.10) é composto fundamentalmente de duas partes: estator e rotor.",
+      "Carcaça (1) é a estrutura suporte do conjunto de construção robusta em ferro fundido, aço ou aluminio injetado, resistente à corrosão e normalmente com aletas.",
+      "Núcleo de chapas (2) as chapas são de aço magnético.",
+      "Enrolamento trifásico (8) - três conjuntos iguais de bobinas, uma para cada fase, formando um sistema trifásico equilibrado ligado à rede trifásica de alimentação.",
+      "Eixo (7) - transmite a potência mecânica desenvolvida pelo motor.",
+      "Núcleo de chapas (3) as chapas possuem as mesmas características das chapas do estator.",
+      "Barras e anéis de curto-circuito (12) são de alumínio injetado sob pressão numa única peça."
+    ]
+  },
+  {
+    "question": "Summarize the characteristics and typical applications for motor categories N, H, and D.",
+    "ground_truth_answer": "According to the document, three-phase induction motors with squirrel cage rotors are classified into categories based on their torque and starting current characteristics:\n\n* **Category N:** Features normal starting torque, normal starting current, and low slip. These are the most common motors on the market and are suitable for normal loads such as **pumps, machine tools, and fans**.\n* **Category H:** Characterized by high starting torque, normal starting current, and low slip. They are used for loads requiring greater starting torque, like **screens, loaded conveyors, high-inertia loads, and crushers**.\n* **Category D:** Provides high starting torque, normal starting current, and high slip (over 5%). These are used in applications like **eccentric presses and similar machines**, as well as **elevators and loads that need very high starting torques with limited starting current**.",
+    "ground_truth_references": [
+      "Conforme as suas características de conjugado em relação à velocidade e corrente de partida, os motores de indução trifásicos com rotor de gaiola são classificados em categorias, cada uma adequada a um tipo de carga.",
+      "Categoria N: Conjugado de partida normal, corrente de partida normal; baixo escorregamento. Constituem a maioria dos motores encontrados no mercado e prestam-se ao acionamento de cargas normais, como bombas, máquinas operatrizes, ventiladores.",
+      "Categoria H: Conjugado de partida alto, corrente de partida normal; baixo escorregamento. Usados para cargas que exigem maior conjugado na partida, como peneiras, transportadores carregadores, cargas de alta inércia, britadores, etc.",
+      "Categoria D: Conjugado de partida alto, corrente de partida normal; alto escorregamento (+ de 5%). Usados em prensas excêntricas e máquinas semelhantes, onde a carga apresenta picos periódicos. Usados também em elevadores e cargas que necessitam de conjugados de partida muito altos e corrente de partida limitada."
+    ]
+  },
+  {
+    "question": "Describe the complete procedure for re-adjusting the air gap on a WEG motor brake.",
+    "ground_truth_answer": "To re-adjust the air gap to its initial values, you must perform the following steps:\n1.  Remove the fixing screws and the deflector cover.\n2.  Remove the protection ring.\n3.  Measure the air gap at three points near the adjustment screws using a standard feeler gauge set.\n4.  If the measured value is greater than or equal to the maximum indicated value, or if the three readings are different, proceed with the adjustment:\n    a. Loosen the locknuts and the adjustment screws.\n    b. Adjust the air gap to its initial value by tightening the three adjustment screws equally. The gap must be uniform at all three measurement points, such that the feeler gauge for the lower limit enters freely all around, and the gauge for the upper limit cannot be inserted at any point.\n    c. Tighten the locking screws until their tips rest on the motor cover, without over-tightening.\n    d. Firmly tighten the locknuts.\n    e. Perform a final check of the air gap as described in step 4b.\n    f. Reinstall the protection ring.\n    g. Reinstall the deflector cover, securing it with the screws.",
+    "ground_truth_references": [
+      "Para reajustar o entreferro a seus valores iniciais, procede-se como segue:",
+      "a) Retirar os parafusos de fixação e remover a Tampa defletora;",
+      "b) Remover o anel de proteção;",
+      "c) Medir o entreferro em três pontos, próximos aos parafusos de regulagem, a qual é feita com um jogo de lâminas padrão (espião);",
+      "d) Se a medida encontrada for maior ou igual ao valor máximo indicado, ou se as três leituras forem diferentes entre si, prosseguir a regulagem da seguinte maneira:",
+      "1. Soltar as contraporcas e os parafusos de regulagem;",
+      "2. Ajustar o entreferro ao seu valor inicial indicado na Tabela 6.1, apertando por igual os três parafusos de regulagem. O valor do entreferro deve ser uniforme nos três pontos de medição e ser de tal forma, que a lâmina padrão correspondente ao limite inferior, penetre livremente em toda a volta, e a lâmina correspondente ao limite superior não possa ser introduzida em nenhum ponto;",
+      "3. Apertar os parafusos de travamento até que sua ponta fique apoiada na tampa do motor. Não apertar em demasia;",
+      "4. Apertar firmemente as contraporcas;",
+      "5. Fazer verificação final do entreferro, procedendo as medições conforme o item 2;",
+      "6. Recolocar a cinta de proteção;",
+      "7. Recolocar a tampa defletora, fixando com os parafusos."
+    ]
+  },
+  {
+    "question": "What is 'slip' (escorregamento) in an induction motor, and what is the formula to calculate it as a percentage?",
+    "ground_truth_answer": "Slip is defined as the difference between the motor's speed (n) and the synchronous speed (ns) of the rotating magnetic field. The formula to express slip as a percentage of the synchronous speed is:\n\ns (%) = [(ns - n) / ns] * 100",
+    "ground_truth_references": [
+      "A diferença entre a velocidade do motor (n) e a velocidade sincrona (n) chama-se escorregamento (s), que pode ser expresso em rotações por minuto (rpm), como fração da velocidade sincrona, ou ainda, como porcentagem desta:",
+      "s (%) = (n-n)/n * 100"
+    ]
+  },
+  {
+    "question": "Compare the main advantages and disadvantages of using a star-delta starter versus an autotransformer (compensator) starter.",
+    "ground_truth_answer": "**Star-Delta Starter Advantages:**\n* It is widely used due to its reduced cost.\n* It has no limit on the number of operations.\n* Its components occupy little space.\n* Starting current is reduced to approximately 1/3.\n\n**Star-Delta Starter Disadvantages:**\n* Can only be applied to motors where all six terminals are accessible.\n* The network voltage must match the motor's delta connection voltage.\n* The starting torque is also reduced to approximately 1/3.\n* If the motor doesn't reach at least 90% of its nominal speed, the current peak during the switch from star to delta will be similar to a direct start, which is detrimental to the contactors.\n\n**Autotransformer (Compensator) Starter Advantages:**\n* With the 65% tap, the line current is similar to a star-delta starter, but the motor is not disconnected during the transition to full voltage, and the second current peak is significantly reduced.\n* It's possible to change the tap from 65% to 80% or even 90% of the line voltage to ensure the motor starts satisfactorily.\n\n**Autotransformer (Compensator) Starter Disadvantages:**\n* Its main disadvantage is the limitation on its frequency of operations.\n* It is much more expensive than a star-delta starter due to the autotransformer.\n* The size of the autotransformer makes the construction bulky, requiring larger panels and increasing its price.",
+    "ground_truth_references": [
+      "Estrela-triângulo (automática) Vantagens a) A chave estrela-triângulo é muito utilizada por seu custo reduzido. b) Não tem limite quanto ao seu número de manobras. c) Os componentes ocupam pouco espaço. d) A corrente de partida fica reduzida para aproximadamente 1/3.",
+      "Desvantagens a) A chave só pode ser aplicada a motores cujos os seis bornes ou terminais sejam acessíveis. b) A tensão da rede deve coincidir com a tensão em triângulo do motor. c) Com a corrente de partida reduzida para aproximadamente 1/3 da corrente nominal, reduz-se também o momento de partida para 1/3. d) Caso o motor não atinja pelo menos 90% de sua velocidade nominal, o pico de corrente na comutação de estrela para triângulo será semelhante a corrente existente em uma partida direta, o que se torna prejudicial aos contatos dos contatores e não traz nenhuma vantagem para a rede elétrica.",
+      "Chave compensadora (automática) Vantagens a) No tap de 65% a corrente de linha é aproximadamente igual à da chave estrela-triângulo, entretanto, na passagem da tensão reduzida para a tensão da rede, o motor não é desligado e o segundo pico é bem reduzido, visto que o autotransformador por curto tempo se torna uma reatância. b) É possível a variação do tap de 65% para 80% ou até para 90% da tensão da rede, a fim de que o motor possa partir satisfatoriamente.",
+      "Desvantagens a) A grande desvantagem é a limitação de sua frequência de manobras. Na chave compensadora automática é sempre necessário saber a sua frequência de manobra para determinar o autotransformador conveniente. b) A chave compensadora é bem mais cara do que a chave estrela-triângulo, devido ao autotransformador. c) Devido ao tamanho do autotransformador, a construção se torna volumosa, necessitando quadros maiores, o que torna o seu preço elevado."
+    ]
+  },
+  {
+    "question": "Under what environmental conditions are heating resistors recommended for an electric motor, and what is their function?",
+    "ground_truth_answer": "Heating resistors are installed when an electric motor is placed in very humid environments (humidity > 95%) and/or when it may remain turned off for long periods (over 24 hours). Their function is to prevent the accumulation of water inside the motor due to the condensation of humid air. They achieve this by heating the motor's interior to a temperature a few degrees (5 to 10°C) above the ambient temperature when the motor is off.",
+    "ground_truth_references": [
+      "As resistências de aquecimento são instaladas quando um motor elétrico é instalado em ambientes muito úmidos, (umidade > 95%) e/ou com possibilidade de ficar desligados por longos períodos (acima de 24 h), impedindo o acúmulo de água no interior do motor pela condensação do ar úmido.",
+      "As resistências de aquecimento, aquecem o interior do motor alguns graus acima da temperatura ambiente (5 a 10°C), quando o motor está desligado."
+    ]
+  },
+  {
+    "question": "Explain how an indirect frequency converter (inverter) varies the speed of an induction motor.",
+    "ground_truth_answer": "An inverter controls the speed of an induction motor by varying the frequency of the power supplied to it. The process involves three main stages:\n\n1.  **Rectification:** A diode bridge converts the incoming AC voltage from the power grid into DC voltage.\n2.  **DC Link / Filter:** A bank of capacitors smooths and regulates the rectified DC voltage, storing energy.\n3.  **Inversion:** IGBT transistors convert the DC voltage back into AC voltage using Pulse Width Modulation (PWM) techniques. This modulation allows the output voltage and frequency to be varied.\n\nBy varying the supply frequency, the speed of the motor's rotating magnetic field is changed, which in turn changes the motor's mechanical speed. To maintain a constant torque, the inverter also varies the voltage amplitude proportionally to the frequency (a constant V/f ratio) up to the motor's nominal frequency.",
+    "ground_truth_references": [
+      "Os inversores de frequência transformam a tensão da rede, de amplitude e frequência constantes, em uma tensão de amplitude e frequência variáveis.",
+      "Variando-se a frequência da tensão de alimentação, varia-se também a velocidade do campo girante e consequentemente a velocidade mecânica do motor.",
+      "A obtenção da tensão e frequência desejadas por meio dos inversores frequência passa basicamente por três estágios: Ponte de diodos - Retificação (transformação CA - CC) da tensão proveniente da rede de alimentação; Filtro ou Link CC - Alisamento/regulação da tensão retificada com armazenamento de energia por meio de um banco de capacitores; Transistores IGBT - Inversão (transformação CC - CA) da tensão do link CC por meio de técnicas de modulação por largura de pulso (PWM).",
+      "Deve-se variar também a amplitude da tensão de alimentação, de maneira proporcional à variação de frequência. Assim, o fluxo e, por conseguinte, o torque eletromagnético do motor, permanecem constantes, enquanto o escorregamento é mantido."
+    ]
+  }
+]

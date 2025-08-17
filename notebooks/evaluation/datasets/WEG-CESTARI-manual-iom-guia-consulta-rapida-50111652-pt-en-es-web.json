@@ -1,0 +1,105 @@
+[
+  {
+    "question": "What information is detailed on the nameplate of a WEG-CESTARI gear unit?",
+    "ground_truth_answer": "The nameplate on a WEG-CESTARI gear unit contains the following information: Type (gear unit or gearmotor code), Serial Number, P1 (Motor or Gear unit power in kW), rpm (Gear unit output speed), M2 (Output Torque in Nm), sf (Gearmotor service factor), i (Speed ratio), Weight (of the gear unit without the motor in kg), Oil (type and viscosity at 40°C), P (Mounting Position and Year of manufacturing), and a TAG space for additional information.",
+    "ground_truth_references": [
+      "The data contained on the gear unit Nameplate are:",
+      "• Type: Gear unit or gearmotor code.",
+      "Serial Number: Serial number.",
+      "P1: Motor or Gear unit power (kW).",
+      "rpm: Gear unit output speed (rpm).",
+      "M2: Output Torque (Nm).",
+      "■ sf: Gearmotor service factor.",
+      "i: Speed ratio.",
+      "• Weight: Weight of the gear unit without motor (kg).",
+      "Oil: Type and viscosity of the oil at 40° C C.",
+      "P: Mounting Position and Year of manufacturing.",
+      "TAG: Space for Information."
+    ]
+  },
+  {
+    "question": "What is the standard warranty period for WEG-CESTARI products and services?",
+    "ground_truth_answer": "The standard warranty period for WEG-CESTARI products is 12 months from the invoice issue date. For services, the standard period is 6 months from the invoice issue date. These periods are independent of the product's installation date or when it begins operation.",
+    "ground_truth_references": [
+      "The warranty against defects in materials and workmanship offered by WEG-CESTARI is:",
+      "Products: Standard period of 12 months from the issue date of the Invoice.",
+      "Services: Standard period of 6 months from the issue date of the Invoice.",
+      "The periods above are independent of product installation date and start of operation."
+    ]
+  },
+  {
+    "question": "Describe the procedure for preparing a gear unit for long-term storage, defined as a period longer than 9 months.",
+    "ground_truth_answer": "To prepare a gear unit for storage longer than 9 months, you must first remove all humidity from the gear unit and any associated cooling system. Check the oil level and add the recommended lubricant if necessary. For units with oil, add a VCI anticorrosive agent at 2% of the lubricant's capacity and turn the shafts. For units without oil, mix 10% of the total recommended lubricant volume with 2% VCI additive and add it to the unit. Seal the gear unit completely by closing air holes and taping around the dipstick. Apply grease around the shafts near the lip seals and wrap these areas with adhesive tape. Finally, inspect and protect external fastening surfaces with an appropriate anticorrosive agent if their protective film is damaged.",
+    "ground_truth_references": [
+      "The following are the guidances for cases of long-term storage or shutdown, i.e., longer than 9 months without operation.",
+      "a) Remove all humidity from the gear unit and from any cooling system of the gear unit;",
+      "b) Check the oil level and complete it if necessary with the lubricant recommended in the product manuals;",
+      "c) For gear units supplied with lubricating oil, add VCI anticorrosive agent (Volatile Corrosion Inhibitor) in the lubricant up to the ration of 2% of lubricant capacity. Then turn the shafts several times;",
+      "d) In the case of gear units supplied without oil, mix 10% of the total volume of lubricant recommended in the manuals with 2% of this total volume of VCI and put into the gear unit.",
+      "e) Seal the gear unit completely by closing the air holes (breathers) and the area around the dipstick with an adhesive tape (if there is a stick type level);",
+      "f) Put grease around the shafts near the lip seals; then wrap the areas of the shaft close to the lip seals with an adhesive tape, leaving it toruching the lip seals;",
+      "g) For external fastening surfaces (shafts and flange faces), they are factory-protected; check and protect these surfaces if necessary (in the event of film loss) with appropriate anticorrosive (Anticorrosive protection oil Castrol Safecoat DW 801 or similar, approximately 50 µm layer)."
+    ]
+  },
+  {
+    "question": "What are the proper procedures for handling and moving gear units or gearmotors?",
+    "ground_truth_answer": "When moving gear units or gearmotors, always use appropriate ropes, lifting slings, and equipment to ensure safety. The equipment should be moved using the lifting eyebolt. If no eyebolt is present, lift the unit via the gear unit housing in conjunction with the motor's eyebolt, ensuring the angle between the cables does not exceed 60 degrees. Never lift the equipment by the motor alone. Before lifting, confirm the load is properly balanced, and handle the unit smoothly to prevent impacts, especially to the shaft ends.",
+    "ground_truth_references": [
+      "For moving and handling gear units/gearmotors, use proper ropes, lifting slings and lifting equipment so as not to put people and the equipment itself at risk.",
+      "The gear units/gearmotors must be moved using the lifting eyebolt (Fig. 2A) and, if eyebolt is not present, the unit must be lifted through the gear unit housing (Fig.2B), together with the eyebolt of the motor (Fig.2C) observing the maximum angle of 60° between the cables.",
+      "Never lift the equipment only through the motor.",
+      "Before completely lifting the gear unit/gearmotor, make sure the load is properly balanced.",
+      "The gear units/gearmotors must always be handled smoothly in order to avoid impacts and damages to the gear unit/gearmotor, especially on the shaft ends."
+    ]
+  },
+  {
+    "question": "Under what conditions will the warranty for a WEG-CESTARI product not be granted?",
+    "ground_truth_answer": "The warranty will not be granted if: the user opens, repairs, or modifies the unit without prior consent; oil leaks from seals dried out by paint applied by the user; the equipment is installed incorrectly (e.g., wrong position, misalignment, unstable base); lubrication is improper, inefficient, or nonexistent; preventive maintenance is not performed; the equipment was incorrectly specified by the customer; it sustained shocks during transport under the customer's responsibility; oil leaks due to a blocked breather; oil is contaminated by external agents when an air filter wasn't ordered; there are wiring or power supply faults; repairs were done by unauthorized personnel; there was neglect or inability in installation/operation; the product has natural wear and tear; or the nameplate/serial number is missing or altered.",
+    "ground_truth_references": [
+      "The warranty will not be granted in the cases below:",
+      "If the customer or end user opens, repairs and/or changes the gear unit or gearmotor without previous consent of WEG-CESTARI;",
+      "Oil leak through the lip seals for drying out caused by coats or paints applied by the end user or machine and equipment supplier;",
+      "Incorrect installation of the equipment (working position different from the order, misalignment, unstable base, shocks or strikes on the shafts, etc.), violating the directions contained in the respective Installation, Operation and Maintenance Manual of the product;",
+      "Improper, inefficient or nonexistent lubrication in cases the equipment is supplied without lubricant;",
+      "Lack of preventive maintenance according to the I Installation, Operation and Maintenance Manual of the products;",
+      "Incorrect specification or poor sizing of the equipment when performed by the customer;",
+      "Shocks or falls during transportation under the responsibility of the customer or third parties hired by the customer;",
+      "Oil leak caused by blocked breather;",
+      "Oil contamination by external agents (dust, water, etc.) when the gear unit was ordered without air filter;",
+      "Wrong wiring or faults in the power supply in cases of motors;",
+      "Repairs and/or adjustments made by unauthorized or non-qualified people;",
+      "Neglect, recklessness or inability in the installation and operation of the products;",
+      "Natural wear of the product due to use and/or wear of the product due to the action of nature agents (weather, corrosion, etc.);",
+      "Gear Units/Gearmotors without nameplates;",
+      "Absence or changing of the serial number."
+    ]
+  },
+  {
+    "question": "What are the environmental guidelines for the disposal and recycling of various WEG-CESTARI product components?",
+    "ground_truth_answer": "WEG-CESTARI provides the following environmental directions for recycling its products: \n- **Frames, Couplings, and Covers (Cast Iron, Steel, or Aluminum):** These are 100% recyclable and should be sent to foundries. \n- **Shafts, Gears, and Pinions (Steel):** These are 100% recyclable and should go to steel plants. \n- **Bevel Gears (Bronze):** These are 100% recyclable and should be sent to foundries. \n- **Oils:** Must be sent for re-refining at duly authorized companies. \n- **Seals (Rubber):** Must be sent to companies licensed for disposal in a class II landfill. \n- **Elastic Elements:** These are 100% recyclable and should be sent to recycling companies. \n- **Packaging (Wood and Cardboard):** Wood can be reused or used as fuel if not contaminated. Cardboard is 100% recyclable if not contaminated. Any material contaminated with oil, grease, or paint must be sent to a company licensed for that type of waste disposal.",
+    "ground_truth_references": [
+      "Frame, Couplings, Covers, etc. (Cast Iron, Steel or Aluminium): They are 100% recyclable and must be sent to foundries.",
+      "Shafts, Gears, Pinions, etc. (Steel): They are 100% recyclable and must be sent to steel plants.",
+      "Bevel Gears (Bronze): They are 100% recyclable and must be sent to foundries.",
+      "Oils: They must be sent for re-refining at duly authorized companies.",
+      "Seals (Rubber): They must be sent to companies duly licensed by the responsible environmental agency (landfill class II)",
+      "Elastic Elements: They are 100% recyclable and must be sent to recycling companies.",
+      "Wood: They are made with reforestation wood and may be reused or used as fuel in boilers when not contaminated (with oil, grease, paint).",
+      "Cardboard: They are 100% recyclable when not contaminated (with oil, grease, paint) and must be sent to recycling companies.",
+      "If some material is contaminated with oil, grease or paint, it must be sent to companies duly licensed by the responsible environmental agency."
+    ]
+  },
+  {
+    "question": "According to the troubleshooting guide, what are the potential causes and corrective measures for a gear unit exhibiting excessive noise and vibration?",
+    "ground_truth_answer": "For excessive noise and vibration, the manual identifies three main causes: \n1. **Irregularities on the mounting screws or inverted installation:** Check the alignment of the unit and any shims. Tighten the screws and ensure anchors are firm in the foundation. \n2. **Fault on the rolling bearings (due to fatigue, dirt, or overload):** Replace worn bearings, clean the inside of the gear unit, and refill with new oil. Also, check and repair clearances, coupling alignment, and loads on the shafts. \n3. **Lack of oil or loss of parts:** Check the oil level and correct it. Inspect the gear unit for broken parts, missing screws, or damaged threads, and check the alignment with the driven machine.",
+    "ground_truth_references": [
+      "SYMPTOMS: Excessive Noise and Vibration",
+      "CAUSES: Irregularities on the mounting screws, Installation inverted.",
+      "CORRECTIVE MEASURES: Check alignment os the unit and the spacing plates or shims. Check the tightening of the screws and if the anchors are film in the foudation or structure.",
+      "CAUSES: Fatigue of the rolling bearings; check for wear on the ball, rollers or tracks: Wear may be for dirt in the oil. Rolling bearing tracks with scales, dents or damaged flanks usually indicate overload. Fault on the rolling bearing cages also indicate overload.",
+      "CORRECTIVE MEASURES: Replace the worn out rolling bearings, clean inside the gear unit and refill with new oil, according to the specification. Replece the worn out rolling bearings; check and repair clearance in the rolling bearings, alignment of the coupling and overload on the gear unit shafts.",
+      "CAUSES: Lack of oil, Oil below the regular level may cause noise. Loss of parts, Excessive shocks or incorrect connection with other elements.",
+      "CORRECTIVE MEASURES: Check the oil level and correct it. Inspect the gear unit, for broken parts, loss of screws, nuts or damaged threads. Check the alignment with the drive machine. Check the keys and tolerances."
+    ]
+  }
+]

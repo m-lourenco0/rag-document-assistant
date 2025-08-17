@@ -1,0 +1,75 @@
+[
+  {
+    "question": "What are the recommended uses for the different types of motor enclosures mentioned in the document?",
+    "ground_truth_answer": "There are three types of motor enclosures mentioned, each with a specific recommended use. Open drip proof (ODP) motors are designed for clean, dry environments that have a sufficient supply of cooling air; they are not to be used where flammable or combustible materials are present. Totally enclosed (TEFC) motors are suitable for both indoor and outdoor locations where dirt, moisture, or corrosive materials may be present. Explosion proof motors are intended for use in hazardous areas as specified by the National Electrical Code (NEC).",
+    "ground_truth_references": [
+      "ODP, Open drip proof motors are intended for use in clean, dry locations with adequate supply of cooling air.",
+      "These motors should not be used in the presence of flammable or combustible materials.",
+      "TEFC, totally enclosed motors are intended for use where moisture, dirt and/or corrosive materials are present in indoor and outdoor locations.",
+      "Explosion proof motors, as indicated by the Underwriters Laboratories, Inc. label are intended for use in hazardous areas as specified by the NEC."
+    ]
+  },
+  {
+    "question": "What is the step-by-step procedure for relubricating a motor?",
+    "ground_truth_answer": "First, clean the grease fitting or the area around the grease hole. If the motor is equipped with a purge plug, it should be removed. You can relubricate the motor while it is stopped (and under 80°C) or while it's running. Slowly apply the recommended quantity of grease, taking about one minute to do so. After applying the grease, operate the motor for 20 minutes before reinstalling the purge plug, if it was removed.",
+    "ground_truth_references": [
+      "Clean the grease fitting (or area around grease hole, if equipped with slotted grease screws).",
+      "If motor has a purge plug, remove it.",
+      "Motors can be regreased while stopped (at less than $80^{\\circ}C)$ or running.",
+      "Slowly apply the recommended amount of grease, taking 1 minute or so to apply.",
+      "Operate motor for 20 minutes, then reinstall purge plug if previously removed."
+    ]
+  },
+  {
+    "question": "For a motor with a NEMA frame size between 280 and 360, what is the recommended amount of grease to add during relubrication, specified in both ounces and teaspoons?",
+    "ground_truth_answer": "For a motor with a NEMA frame size over 280 up to 360, the recommended amount of grease to add is 0.81 ounces, which is equivalent to 5.2 teaspoons.",
+    "ground_truth_references": [
+      "\"Over 280 to 360 incl. (225)\",\"0.81 (23.1)\",\"1.5\",\"5.2\""
+    ]
+  },
+  {
+    "question": "What are the initial steps and checks that should be performed upon receiving a motor, before proceeding with installation?",
+    "ground_truth_answer": "Upon receiving a motor, you must first use correct material handling equipment due to the weight. Before accepting the delivery, inspect the motor for any damage. You should also verify that the motor shaft can rotate freely without any rubs. If any damage is discovered, it must be reported immediately to the commercial carrier that made the delivery.",
+    "ground_truth_references": [
+      "Use correct material handling equipment to avoid injury.",
+      "Inspect the motor for damage before accepting it.",
+      "The Motor shaft should rotate freely with no rubs.",
+      "Report any damage immediately to the commercial carrier that delivered your motor."
+    ]
+  },
+  {
+    "question": "Summarize the key safety guidelines that must be followed for motor installation and operation.",
+    "ground_truth_answer": "Qualified personnel must perform the installation in accordance with NEC, local codes, and NEMA MG2 standards. Key safety rules include: ensuring eyebolts are tight and used only to lift the motor; properly grounding the motor; guarding all rotating parts; securing the shaft key before starting; and mounting the motor securely before applying power. Additionally, the motor must be connected to the correct voltage and frequency, safeguards must be in place for motor-mounted brakes, all power must be disconnected before servicing, capacitors must be discharged on single-phase motors before service, safety devices must not be bypassed, the maximum speed rating must not be exceeded when using an inverter, and high-tensile steel mounting bolts with a locking device should be used.",
+    "ground_truth_references": [
+      "Only qualified personnel trained in the safe installation and operation of this equipment should install this motor.",
+      "Equipment must be installed in accordance with the National Electrical Code (NEC), local codes and NEMA MG2 Safety Standards for Construction and Guide for Selection, Installation and Use of Electric Motors and Generators.",
+      "1. When eyebolts are provided, they must be fully tightened and are intended to lift the motor and its included accessories only.",
+      "2. Ground the motor according to NEC and local codes.",
+      "3. Provide a permanent guard to prevent accidental contact of body parts or clothing with rotating or moving parts or burns if motor is hot.",
+      "4. Shaft key must be secured before starting motor.",
+      "5. Do not apply power to the motor until the motor is securely mounted by its mounting holes.",
+      "6. This motor must only be connected to the proper line voltage, line frequency and load size.",
+      "7. If a motor mounted brake is installed, provide proper safeguards for personnel in case of brake failure.",
+      "8. Disconnect all power services and stop the motor before servicing.",
+      "9. For single phase motors, discharge the start and/or run capacitors before servicing.",
+      "10. Do not by-pass or render inoperative any safety device.",
+      "11. When using AC motors with frequency inverters, be certain that the Maximum Speed rating (on nameplate) is not exceeded.",
+      "12. Mounting bolts should be high tensile steel. Be sure to use a suitable locking device on each bolt (spring washer or thread lock compound)."
+    ]
+  },
+  {
+    "question": "What is the relubrication interval for a motor with a NEMA frame size of 210 or smaller that operates at a rated speed of 3600 RPM?",
+    "ground_truth_answer": "For a motor with a NEMA frame size up to and including 210 operating at a rated speed of 3600 RPM, the recommended relubrication interval is 5500 hours.",
+    "ground_truth_references": [
+      "\"Up to 210 incl. (132)\",\"5500Hrs.\",\"12000Hrs.\",\"18000Hrs.\",\"22000Hrs.\""
+    ]
+  },
+  {
+    "question": "What actions should be taken if a motor does not start quickly and run smoothly after being connected to a load?",
+    "ground_truth_answer": "If the motor does not start quickly and run smoothly, it should be stopped immediately to determine the cause. Potential issues could be low voltage at the motor, incorrect motor connections, or a load that is too heavy.",
+    "ground_truth_references": [
+      "If not, stop the motor immediately and determine the cause.",
+      "Possible causes are: low voltage at the motor, motor connections are not correct or the load is too heavy."
+    ]
+  }
+]
