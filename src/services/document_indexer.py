@@ -1,9 +1,7 @@
 import os
 import uuid
-import asyncio
 import logging
 
-from asyncio import Semaphore
 from typing import List, Dict, Tuple
 from concurrent.futures import ThreadPoolExecutor
 from pydantic import BaseModel, Field
