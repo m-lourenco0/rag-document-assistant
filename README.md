@@ -278,6 +278,8 @@ curl -X 'POST' \
 }
 ```
 
+-----
+
 ## 📂 Project Structure
 
 The project follows a modular structure within the `src/` directory to separate concerns and improve maintainability.
