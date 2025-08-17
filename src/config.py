@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 class LLMProfile(BaseModel):
     primary_provider: str = "openai"
-    primary_model_name: str = "gpt-4.1-mini"
+    primary_model_name: str = "gpt-5-mini"
     fallback_provider: str = "google"
     fallback_model_name: str = "gemini-2.5-flash"
     temperature: float = 0.0
@@ -46,7 +46,7 @@ class AppSettings(BaseSettings):
 
     # --- RAG Pipeline Configuration ---
     RAG_CHUNK_SIZE: int = 200
-    RAG_INDEXING_BATCH_SIZE: int = 500
+    RAG_INDEXING_BATCH_SIZE: int = 200
     RAG_SEARCH_K: int = 30
     RAG_RERANKER_TOP_N: int = 5
 
@@ -57,11 +57,11 @@ class AppSettings(BaseSettings):
     # Each tool/agent can have its own LLM configuration for fine-tuning behavior.
 
     AGENT_LLM_PROFILE: LLMProfile = LLMProfile(
-        primary_model_name="gpt-4.1-mini", temperature=0.0
+        primary_model_name="gpt-5-mini", temperature=0.0
     )
 
     RAG_LLM_PROFILE: LLMProfile = LLMProfile(
-        primary_model_name="gpt-4.1-mini", temperature=0.0
+        primary_model_name="gpt-5-mini", temperature=0.0
     )
 
 
